@@ -35,7 +35,7 @@ app.use("/", require("./routers/test"))
 app.use("/admin", admin)
 app.use("/category", auth.verifyToken, category)
 app.use("/blog", auth.verifyToken, blog)
-app.use("/upload", auth.verifyToken, upload)
+app.use("/upload", upload)
 
 
 app.listen(port, () => {

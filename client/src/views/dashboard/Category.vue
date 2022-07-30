@@ -24,18 +24,17 @@
     >
       <template #bodyCell="{ column, record }">
         <template v-if="column.dataIndex === 'operation'">
-          <a-button
-            type="primary"
-            style="margin-right: 10px"
-            @click="handleEdit(record.id, record.name)"
-            >编辑</a-button
-          >
-          <a-popconfirm
-            title="确定删除吗？"
-            @confirm="deleteCategory(record.id)"
-          >
-            <a-button type="primary" danger>删除</a-button>
-          </a-popconfirm>
+          <a-space>
+            <a-button type="primary" @click="handleEdit(record.id, record.name)"
+              >编辑</a-button
+            >
+            <a-popconfirm
+              title="确定删除吗？"
+              @confirm="deleteCategory(record.id)"
+            >
+              <a-button type="primary" danger>删除</a-button>
+            </a-popconfirm>
+          </a-space>
         </template>
       </template>
     </a-table>

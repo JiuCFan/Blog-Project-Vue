@@ -3,14 +3,19 @@ import Test from '../views/Test.vue'
 import Login from '../views/Login.vue'
 import Dashboard from '../views/dashboard/Dashboard.vue'
 import Category from '../views/dashboard/Category.vue'
-import Article from '../views/dashboard/Article.vue'
+import ArticleList from '../views/dashboard/ArticleList.vue'
+import AddArticle from '../views/dashboard/AddArticle.vue'
+import EditArticle from '../views/dashboard/EditArticle.vue'
+
 let routes = [
   { path: '/test', component: Test },
   { path: '/login', component: Login },
   {
-    path: '/dashboard', component: Dashboard, children: [
+    path: '/dashboard', redirect: '/dashboard/articleList', component: Dashboard, children: [
       { path: '/dashboard/category', component: Category },
-      { path: '/dashboard/article', component: Article }
+      { path: '/dashboard/articleList', component: ArticleList },
+      { path: '/dashboard/addArticle', component: AddArticle },
+      { path: '/dashboard/editArticle', component: EditArticle },
     ]
   },
   // { path: '/dashboard/category', component: Category }

@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@wangeditor/editor": "^5.1.14",
+    "@wangeditor/editor-for-vue": "^5.1.12",
     "ant-design-vue": "^3.2.10",
     "axios": "^0.27.2",
+    "moment": "^2.29.4",
     "pinia": "^2.0.17",
     "sass": "^1.54.0",
     "vue": "^3.2.37",

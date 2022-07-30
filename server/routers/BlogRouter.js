@@ -146,4 +146,25 @@ router.get("/search", async (req, res) => {
   }
 })
 
+// 博客详情
+router.get("/detail", async (req, res) => {
+  let id = req.query.id
+  const detail_sql = "select * from blog where id=?"
+  let { err, results } = await query(detail_sql, [id])
+  if (err == null) {
+    console.log(results)
+    res.send({
+      code: 200,
+      msg: "获取成功",
+      data: results[0]
+    })
+  } else {
+    res.send({
+      code: 500,
+      msg: "获取失败",
+      error: err
+    })
+  }
+})
+
 module.exports = router
