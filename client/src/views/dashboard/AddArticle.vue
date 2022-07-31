@@ -65,7 +65,6 @@ const loadCategory = async () => {
 }
 // 选择器类别搜索
 const filterOption = (input, option) => {
-  console.log(input, option)
   return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
 }
 // 选中后获取categoryId
@@ -80,7 +79,6 @@ const addArticle = async () => {
   let res = await http.post('/blog/add', article)
   if (res.data.code == 200) {
     message.success(res.data.msg)
-    console.log(article)
     article.title = ''
     article.categoryId = 0
     article.content = ''

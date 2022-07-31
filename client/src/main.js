@@ -6,7 +6,6 @@ import 'ant-design-vue/dist/antd.css'
 import { router } from './utils/router'
 import { createPinia } from 'pinia'
 import { http } from './utils/http'
-import axios from "axios"
 
 /**
  * axios

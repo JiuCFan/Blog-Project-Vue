@@ -1,5 +1,4 @@
 <template>
-  {{ article }}
   <a-form
     :model="article"
     @finish="editArticle"
@@ -32,7 +31,7 @@
 
     <a-form-item>
       <a-button type="primary" html-type="submit" block>提交</a-button>
-      <a-button block>取消</a-button>
+      <a-button block @click="goBack" style="margin-top: 5px">取消</a-button>
     </a-form-item>
   </a-form>
 </template>
@@ -93,13 +92,17 @@ const loadArticleInfo = async () => {
 
 const editArticle = async () => {
   console.log('edit')
-  let res = await http.post('/blog/add', { id, ...article })
+  let res = await http.put('/blog/update', { id, ...article })
   if (res.data.code == 200) {
     message.success(res.data.msg)
     router.push('/dashboard/articleList')
   } else {
     message.error(res.data.msg)
   }
+}
+
+const goBack = () => {
+  router.back()
 }
 </script>
 

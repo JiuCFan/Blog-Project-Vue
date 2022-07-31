@@ -1,15 +1,16 @@
 const express = require("express")
 const router = express.Router()
 const { query, genid } = require("../db/DbUtils")
+const { verifyToken } = require("../utils/JWT")
 
 // 添加博客
-router.post("/add", async (req, res) => {
+router.post("/add", verifyToken, async (req, res) => {
   let { title, categoryId, content } = req.body
   let id = genid.NextId()
   let create_time = new Date().getTime()
 
-  let add_sql = "insert into blog(id,category_id,title,content,create_time) values(?,?,?,?,?)"
-  let param = [id, categoryId, title, content, create_time]
+  let add_sql = "insert into blog(id,category_id,title,content,create_time,update_time) values(?,?,?,?,?,?)"
+  let param = [id, categoryId, title, content, create_time, create_time]
   let { err, results } = await query(add_sql, param)
   let blogInfo = { id, categoryId, title, content, create_time }
   if (err == null) {
@@ -28,7 +29,7 @@ router.post("/add", async (req, res) => {
 })
 
 // 修改博客
-router.put("/update", async (req, res) => {
+router.put("/update", verifyToken, async (req, res) => {
   let { id, title, categoryId, content } = req.body
   let update_time = new Date().getTime()
   let blogInfo = { id, categoryId, title, content, update_time }
@@ -52,7 +53,7 @@ router.put("/update", async (req, res) => {
 })
 
 // 删除博客
-router.delete("/delete", async (req, res) => {
+router.delete("/delete", verifyToken, async (req, res) => {
   let id = req.query.id
   const delete_sql = "delete from blog where id=?"
   let { err, results } = await query(delete_sql, [id])
@@ -83,7 +84,7 @@ router.get("/search", async (req, res) => {
    */
   let { keyword, categoryId, page, pagesize } = req.query
   page = page == null ? 1 : page
-  pagesize = pagesize == null ? 10 : pagesize
+  pagesize = pagesize == null ? 10 : Number(pagesize)
   categoryId = categoryId == null ? 0 : categoryId
   keyword = keyword == null ? "" : keyword
 
@@ -107,7 +108,7 @@ router.get("/search", async (req, res) => {
   }
 
   // 分页数据sql
-  let search_sql = " select * from blog " + where_sqlStr + " order by create_time desc, update_time desc limit ?,?"
+  let search_sql = " select * from blog " + where_sqlStr + " order by update_time desc, create_time desc  limit ?,?"
   // limit ?,? 0,10 从第0条开始往后取10条数据
   let search_params = params.concat([(page - 1) * pagesize, pagesize])
 
@@ -141,7 +142,8 @@ router.get("/search", async (req, res) => {
   } else {
     res.send({
       code: 500,
-      msg: "查询失败"
+      msg: "查询失败",
+      error: [searchResult.err, countResult.err]
     })
   }
 })
@@ -152,7 +154,6 @@ router.get("/detail", async (req, res) => {
   const detail_sql = "select * from blog where id=?"
   let { err, results } = await query(detail_sql, [id])
   if (err == null) {
-    console.log(results)
     res.send({
       code: 200,
       msg: "获取成功",

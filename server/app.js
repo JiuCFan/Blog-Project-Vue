@@ -33,8 +33,8 @@ app.use(express.static(path.join(__dirname, "public")))
 
 app.use("/", require("./routers/test"))
 app.use("/admin", admin)
+app.use("/blog", blog)
 app.use("/category", auth.verifyToken, category)
-app.use("/blog", auth.verifyToken, blog)
 app.use("/upload", upload)
 
 

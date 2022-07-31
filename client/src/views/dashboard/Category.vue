@@ -1,6 +1,6 @@
 <template>
   <div class="table-planel">
-    <a-button type="primary" style="margin: 8px" @click="handleAdd"
+    <a-button type="primary" style="margin: 8px 0" @click="handleAdd"
       >添加分类</a-button
     >
     <a-modal

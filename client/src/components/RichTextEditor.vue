@@ -65,7 +65,9 @@ const emit = defineEmits(['update:model-value'])
 
 // 模拟 ajax 异步获取内容
 onMounted(() => {
-  innitValue()
+  if (props.id) {
+    innitValue()
+  }
 })
 
 // 组件销毁时，也及时销毁编辑器
