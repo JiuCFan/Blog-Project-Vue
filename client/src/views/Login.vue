@@ -46,12 +46,12 @@
 <script setup>
 import { ref, reactive, inject } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { AdminStore } from '../stores/AdminStore'
+// import { AdminStore } from '../stores/AdminStore'
 import { message } from 'ant-design-vue'
 import { setToken } from '../utils/token'
 
 const http = inject('http')
-const adminStore = AdminStore()
+// const adminStore = AdminStore()
 
 const router = useRouter()
 const route = useRoute()
@@ -70,8 +70,8 @@ const login = async () => {
   console.log(res)
   if (res.code == 200) {
     setToken(res.data.token)
-    adminStore.account = res.data.account
-    adminStore.id = res.data.id
+    // adminStore.account = res.data.account
+    // adminStore.id = res.data.id
 
     // 记住账号密码
     if (admin.remember) {

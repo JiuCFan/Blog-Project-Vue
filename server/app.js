@@ -13,7 +13,6 @@ const path = require("path")
 const app = express()
 const port = 8080
 
-const auth = require("./utils/JWT")
 const admin = require("./routers/AdminRouter")
 const category = require("./routers/CategoryRouter")
 const blog = require("./routers/BlogRouter")
@@ -31,10 +30,9 @@ app.use(update.any())
 // 指定静态资源路径
 app.use(express.static(path.join(__dirname, "public")))
 
-app.use("/", require("./routers/test"))
 app.use("/admin", admin)
 app.use("/blog", blog)
-app.use("/category", auth.verifyToken, category)
+app.use("/category", category)
 app.use("/upload", upload)
 
 

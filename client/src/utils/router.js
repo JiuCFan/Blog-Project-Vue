@@ -7,6 +7,7 @@ import ArticleList from '../views/dashboard/ArticleList.vue'
 import AddArticle from '../views/dashboard/AddArticle.vue'
 import EditArticle from '../views/dashboard/EditArticle.vue'
 import ArticleDetail from '../views/ArticleDetail.vue'
+import page404 from '../views/page404.vue'
 import { getToken } from './token'
 import { message } from 'ant-design-vue'
 
@@ -16,13 +17,17 @@ let routes = [
   {
     path: '/dashboard', redirect: '/dashboard/articleList', component: Dashboard,
     children: [
-      { path: '/dashboard/category', component: Category, },
-      { path: '/dashboard/articleList', component: ArticleList },
-      { path: '/dashboard/addArticle', component: AddArticle },
-      { path: '/dashboard/editArticle', component: EditArticle },
+      { path: '/dashboard/category', component: Category, meta: { needLogin: true } },
+      { path: '/dashboard/articleList', component: ArticleList, meta: { needLogin: true } },
+      { path: '/dashboard/addArticle', component: AddArticle, meta: { needLogin: true } },
+      { path: '/dashboard/editArticle', component: EditArticle, meta: { needLogin: true } },
     ],
+    meta: {
+      needLogin: true
+    }
   },
-  { path: '/detail', component: ArticleDetail, name: 'detail' }
+  { path: '/detail', component: ArticleDetail, name: 'detail' },
+  { path: '/:pathMatch(.*)*', name: 'NotFound', component: page404 },
 ]
 let router = createRouter({
   history: createWebHashHistory(),
@@ -31,7 +36,7 @@ let router = createRouter({
 const token = getToken()
 
 // 全局路由守卫
-router.beforeEach((to, from) => {
+/* router.beforeEach((to, from) => {
   if (
     // 检查用户是否已登录
     !token &&
@@ -44,8 +49,7 @@ router.beforeEach((to, from) => {
     // 将用户重定向到登录页面
     return '/login'
   }
-
-})
+}) */
 
 
 

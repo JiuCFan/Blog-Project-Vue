@@ -1,5 +1,15 @@
 <template>
-  <div style="margin: 15px 5%">
+  <div style="display: flex; margin: 15px 5%">
+    <a-select
+      v-model:value="categoryId"
+      :options="categoryOptions"
+      :filter-option="filterOption"
+      show-search
+      placeholder="全部"
+      style="min-width: 100px"
+      @change="categoryChange"
+    >
+    </a-select>
     <a-input-search
       v-model:value="searchValue"
       placeholder="搜文章..."
@@ -47,8 +57,10 @@
       </a-space>
     </div>
   </div>
+  <a-empty :image="simpleImage" v-show="articleInfo.articleList.length <= 0" />
 
   <a-pagination
+    v-show="articleInfo.articleList.length > 0"
     v-model:current="current"
     :total="articleInfo.count"
     show-less-items
@@ -62,12 +74,16 @@
 import { ref, reactive, onMounted, inject } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import moment from 'moment'
+import { Empty } from 'ant-design-vue'
+
+const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE
 
 const http = inject('http')
 const router = useRouter()
 const route = useRoute()
 
 onMounted(() => {
+  loadCategory()
   loadArticle()
 })
 
@@ -82,6 +98,24 @@ const pageChange = () => {
 const onSearch = () => {
   loadArticle()
 }
+const categoryChange = () => {
+  loadArticle()
+}
+
+const categoryId = ref(null)
+const categoryOptions = ref([])
+// 加载Category数据用于选择器
+const loadCategory = async () => {
+  let res = await http.get('/category/list')
+  categoryOptions.value = res.data.results.map((item) => {
+    return { value: item.id, label: item.name }
+  })
+  categoryOptions.value.unshift({ value: null, label: '全部' })
+}
+// 选择器类别搜索
+const filterOption = (input, option) => {
+  return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+}
 
 const articleInfo = reactive({
   page: 1,
@@ -95,6 +129,7 @@ const loadArticle = async () => {
       page: current.value,
       pagesize: pageSize.value,
       keyword: searchValue.value,
+      categoryId: categoryId.value,
     },
   })
   let res = data.data

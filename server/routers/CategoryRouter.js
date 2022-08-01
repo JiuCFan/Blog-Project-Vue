@@ -1,9 +1,10 @@
 const express = require("express")
 const router = express.Router()
 const { query, genid } = require("../db/DbUtils")
+const { verifyToken } = require("../utils/JWT")
 
 // 添加接口
-router.post("/add", async (req, res) => {
+router.post("/add", verifyToken, async (req, res) => {
   let { name } = req.body
   const insert_sql = "insert into category(id,name) values(?,?)"
   let { err, results } = await query(insert_sql, [genid.NextId(), name])
@@ -22,7 +23,7 @@ router.post("/add", async (req, res) => {
 })
 
 // 修改接口
-router.put("/update", async (req, res) => {
+router.put("/update", verifyToken, async (req, res) => {
   let { id, name } = req.body
   const update_sql = "update category set name=? where id=?"
   let { err, results } = await query(update_sql, [name, id])
@@ -41,7 +42,7 @@ router.put("/update", async (req, res) => {
 })
 
 // 删除接口 /category/delete?id=xxx
-router.delete("/delete", async (req, res) => {
+router.delete("/delete", verifyToken, async (req, res) => {
   let id = req.query.id
   const delete_sql = "delete from category where id=?"
   let { err, results } = await query(delete_sql, [id])

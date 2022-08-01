@@ -20,7 +20,7 @@ verifyToken = function (req, res, next) {
     jwt.verify(token, secretKey, function (err, decoded) {
       if (err) {
         console.log("verify error", err)
-        return res.status(403).json({ code: "403", msg: "token无效" })
+        return res.status(403).json({ code: "403", msg: "token失效" })
       }
       console.log("verify decoded", decoded)
       next()

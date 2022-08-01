@@ -1,6 +1,7 @@
 // encapsulate axios
 import axios from "axios"
 import { getToken } from "./token"
+import { message } from "ant-design-vue"
 
 
 const http = axios.create({
@@ -31,16 +32,14 @@ http.interceptors.response.use(
     return response
   },
   (error) => {
-    console.log(error.response)
-    if (error.response.status == 403) {
-      /*   message.error('请先登录')
-        console.log(router)
-        console.log(route)
-        // router.push('/login') */
-    }
     // Status codes outside the 2xx range will trigger this function.
     // do something with the response error
-    return Promise.reject(error)
+    console.log(error.response)
+    if (error.response.status == 403) {
+      message.error('登录过期，请重新登录')
+      window.location.href = '/#/login'
+      return Promise.reject(error)
+    }
   }
 )
 
