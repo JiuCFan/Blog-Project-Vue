@@ -9,7 +9,7 @@
 管理员：进入管理后台，可对博文和分类增删改查
 
 ## mysql数据库结构
-在‘/server/db/DbUtils.js/’中
+在‘/server/db/DbUtils.js’中
 与数据库建立链接的代码如下：
 
 ![image](https://user-images.githubusercontent.com/102190949/182211686-881601b7-c398-46b1-9f20-7584e0f7f580.png)
